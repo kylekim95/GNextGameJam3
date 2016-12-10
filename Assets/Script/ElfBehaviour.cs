@@ -24,37 +24,71 @@ public class ElfBehaviour : RobotsBehavior {
 	}
 
 	void Update(){
-		base.Update ();
-		if (canClimb) {
-			if (Input.GetAxisRaw ("Vertical") != 0) {
-				onLadder = true;
-				skel.state.TimeScale = 1;
-				GetComponent<Rigidbody2D> ().gravityScale = 0;
-				GetComponent<Rigidbody2D> ().transform.Translate(new Vector2 (0, climbSpeed * Input.GetAxisRaw("Vertical")));
-				ladder ();
-			} else if(onLadder) {
-				skel.state.TimeScale = 0;
-			}
-		}
-		else if(holding) {
-			float input = Input.GetAxisRaw ("Horizontal");
-			if (input != 0) {
-				GetComponent<Rigidbody2D> ().velocity = new Vector2 (input * 2f,GetComponent<Rigidbody2D>().velocity.y);
-				push_walk ();
-			} else {
-				push_idle ();
-			}
-		}
-		else {
-			
-			if (isActive && Input.GetKeyDown (KeyCode.Space) && grounded) {
-				jump ();
-				jumpingup ();
-			}
-			if (gameObject.GetComponent<Rigidbody2D> ().velocity.magnitude > 0) {
-				gameObject.GetComponent<Rigidbody2D> ().velocity += new Vector2 (0, gravity * Time.deltaTime);
-			} 
-		}
+        print(canClimb);
+        print(grounded);
+        if (onLadder)
+        {
+            if (Input.GetKeyDown(KeyCode.F) && !canClimb && grounded)
+            {
+                skel.state.ClearTrack(0);
+                canClimb = true;
+            }
+        }
+        if (!canClimb)
+        {
+            GetComponent<Rigidbody2D>().isKinematic = false;
+        }
+        if(wakeup == false)
+        {
+            base.Update();
+        }
+        else if (wakeup == true)
+        {
+            if (canClimb)
+            {
+                if (onLadder)
+                {
+                    GetComponent<Rigidbody2D>().isKinematic = true;
+                    ladder();
+                    if (Input.GetAxisRaw("Vertical") != 0)
+                    {
+                        skel.state.TimeScale = 1;
+                        
+                        GetComponent<Rigidbody2D>().transform.Translate(new Vector2(0, climbSpeed * Input.GetAxisRaw("Vertical")));
+
+                    }
+                    else
+                    {
+                        skel.state.TimeScale = 0;
+                    }
+                }
+            }
+            else if (holding)
+            {
+                if (Input.GetAxisRaw("Horizontal") != 0)
+                {
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Input.GetAxisRaw("Horizontal") * 2f, GetComponent<Rigidbody2D>().velocity.y);
+                    push_walk();
+                }
+                else
+                {
+                    push_idle();
+                }
+            }
+            else
+            {
+                base.Update();
+                if (isActive && Input.GetKeyDown(KeyCode.Space) && grounded)
+                {
+                    jump();
+
+                }
+                if (gameObject.GetComponent<Rigidbody2D>().velocity.magnitude > 0)
+                {
+                    gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0, gravity * Time.deltaTime);
+                }
+            }
+        }
 	}
 
 	void jump(){
@@ -65,9 +99,9 @@ public class ElfBehaviour : RobotsBehavior {
 	void OnCollisionEnter2D(Collision2D col){
 		if (col.gameObject.layer == LayerMask.NameToLayer("Ground") || col.gameObject.layer == LayerMask.NameToLayer("Medium")) {
 			grounded = true;
-			onLadder = false;
-			skel.state.ClearTrack (1);
-		}
+            canClimb = false;
+            GetComponent<Rigidbody2D>().isKinematic = false;
+        }
 	}
 
 	void OnTriggerStay2D(Collider2D col){
@@ -75,20 +109,21 @@ public class ElfBehaviour : RobotsBehavior {
 			holding = true;
 		}
 		if (col.gameObject.layer == LayerMask.NameToLayer ("Ladder")) {
-			canClimb = true;
+            onLadder = true;
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D col){
-		if (col.gameObject.layer == LayerMask.NameToLayer ("Medium")) {
+        if (col.gameObject.layer == LayerMask.NameToLayer ("Medium")) {
 			holding = false;
-		}
+        }
 		if (col.gameObject.layer == LayerMask.NameToLayer ("Ladder")) {
 			canClimb = false;
-			onLadder = false;
-		}
-	}
+            onLadder = false;
 
+        }
+	}
+    
 	void push_idle(){
 		setAnimation(0, "Push_Idle", true, 1f);
 	}
@@ -98,11 +133,11 @@ public class ElfBehaviour : RobotsBehavior {
 	}
 
 	void ladder(){
-		setAnimation(2, "Ladder", true, 1f);
+		setAnimation(0, "Ladder", true, 1f);
 	}
 
 	void jumpingup(){
-		setAnimation(1, "Jump_Up", true, 1f);
+		setAnimation(0, "Jump_Up", true, 1f);
 	}
 
 	void jumpingdown(){

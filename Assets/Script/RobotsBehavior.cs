@@ -60,8 +60,8 @@ public class RobotsBehavior : MonoBehaviour
 			if (_isActive) {
 				if (!wakeup) {
 					Wake ();
-				}
-				RobotMove ();
+                }else
+				    RobotMove ();
 			}
 		}
 	}
@@ -78,7 +78,7 @@ public class RobotsBehavior : MonoBehaviour
 			transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, 0);
 		}
         var vexPos = new Vector3
-            (axis, Input.GetAxis("Vertical"), 0);
+            (axis, 0, 0);
 
         gameObject.transform.position
             += vexPos * speed * Time.deltaTime;
