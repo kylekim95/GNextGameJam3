@@ -7,7 +7,7 @@ using Spine.Unity;
 public class Clone : MonoBehaviour {
 	bool sameDirection;
 	float axis;
-	float speed = 4.0f;
+	float speed = 10.0f;
 	protected SkeletonAnimation skel;
 	protected string cur_animation = "";
 	bool wait = false;
