@@ -12,17 +12,20 @@ public class LoaderRobotBehavior : RobotsBehavior {
 		if (other.transform.tag == "RobotOff" || other.transform.tag == "RobotOn") {
 			Physics2D.IgnoreCollision (other.GetComponent<Collider2D> (), GetComponent<Collider2D> ());
 		}
-		if (Input.GetKeyDown (KeyCode.Mouse0) && other.gameObject.layer == LayerMask.NameToLayer("Medium") && !lifting) {
-			other.gameObject.GetComponent<Rigidbody2D> ().gravityScale = 0;
-			other.gameObject.GetComponent<Transform> ().transform.Translate(new Vector3(0,4,0));
-			Transform[] children = transform.GetComponentsInChildren<Transform> ();
-			foreach(Transform t in children){
-				if (t.name == "Load") {
-					other.transform.SetParent (t.transform);
-				}
-			}
-			lifting = true;
-			LoadOn ();
+		if (Input.GetKeyDown (KeyCode.Mouse0) && !lifting) {
+
+            if (other.gameObject.layer == LayerMask.NameToLayer("Large") || other.gameObject.layer == LayerMask.NameToLayer("Medium")){
+                other.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+                other.gameObject.GetComponent<Transform>().transform.Translate(new Vector3(0, 4, 0));
+                Transform[] children = transform.GetComponentsInChildren<Transform>();
+                foreach (Transform t in children) {
+                    if (t.name == "Load") {
+                        other.transform.SetParent(t.transform);
+                    }
+                }
+                lifting = true;
+                LoadOn();
+            }
 		}
 		if (Input.GetKeyDown (KeyCode.Mouse1) && lifting) {
 			other.gameObject.GetComponent<Rigidbody2D> ().gravityScale = 9.81f;

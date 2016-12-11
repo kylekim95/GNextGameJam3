@@ -4,7 +4,6 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
     public static GameManager gameManager;
 	public bool firstChoice = true;
-
     void Awake()
     {
 		if (selectedObj == null) {

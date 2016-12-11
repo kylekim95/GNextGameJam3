@@ -95,7 +95,7 @@ public class ElfBehaviour : RobotsBehavior {
 	}
 
 	void OnCollisionEnter2D(Collision2D col){
-		if (col.gameObject.layer == LayerMask.NameToLayer("Ground") || col.gameObject.layer == LayerMask.NameToLayer("Medium")) {
+		if (col.gameObject.layer == LayerMask.NameToLayer("Ground") || col.gameObject.tag == "landscape") {
 			grounded = true;
             canClimb = false;
             GetComponent<Rigidbody2D>().isKinematic = false;
@@ -103,7 +103,7 @@ public class ElfBehaviour : RobotsBehavior {
 	}
 
 	void OnTriggerStay2D(Collider2D col){
-		if (col.gameObject.layer == LayerMask.NameToLayer ("Medium")) {
+		if (col.gameObject.tag == "landscape") {
 			holding = true;
 		}
 		if (col.gameObject.layer == LayerMask.NameToLayer ("Ladder")) {
@@ -112,7 +112,7 @@ public class ElfBehaviour : RobotsBehavior {
 	}
 
 	void OnTriggerExit2D(Collider2D col){
-        if (col.gameObject.layer == LayerMask.NameToLayer ("Medium")) {
+        if (col.gameObject.tag == "landscape") {
 			holding = false;
         }
 		if (col.gameObject.layer == LayerMask.NameToLayer ("Ladder")) {
