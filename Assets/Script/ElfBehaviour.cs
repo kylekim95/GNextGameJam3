@@ -24,8 +24,6 @@ public class ElfBehaviour : RobotsBehavior {
 	}
 
 	void Update(){
-        print(canClimb);
-        print(grounded);
         if (onLadder)
         {
             if (Input.GetKeyDown(KeyCode.F) && !canClimb && grounded)

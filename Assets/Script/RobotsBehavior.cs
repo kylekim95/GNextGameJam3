@@ -14,6 +14,8 @@ public class RobotsBehavior : MonoBehaviour
 	public float axis;
     public float speed = 10.0f;
 	public bool wait = false;
+	int health = 5;
+	GameObject target;
 
 	private bool _isActive = false;
     public bool isActive
@@ -48,7 +50,7 @@ public class RobotsBehavior : MonoBehaviour
     protected void Start()
     {
 		skel = GetComponentInChildren<SkeletonAnimation>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		gameManager = GameManager.gameManager.GetComponent<GameManager>();
 		shutDown ();
     }
     
@@ -150,6 +152,13 @@ public class RobotsBehavior : MonoBehaviour
 	void OnTriggerStay2D(Collider2D collision){
 		if (collision.transform.tag == "RobotOff" || collision.transform.tag == "RobotOn") {
 			Physics2D.IgnoreCollision (collision.GetComponent<Collider2D> (), GetComponent<Collider2D> ());
+		}
+	}
+
+	public void receiveDamage(int damage){
+		health -= damage;
+		if (health == 0) {
+			isActive = false;
 		}
 	}
 }

@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 			selectedObj = new GameObject ();
 			selectedObj.transform.position = new Vector3 (0, 0, 0);
 		}
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager = this.GetComponent<GameManager>();
     }
   	
     //현재 움직이고 있는 로봇을 받는다.
